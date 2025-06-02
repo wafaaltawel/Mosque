@@ -9,7 +9,7 @@ class MainAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF2b836b),
       elevation: 0,
       centerTitle: true,
       title: BlocBuilder<MainBloc, MainState>(

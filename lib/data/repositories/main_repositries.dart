@@ -11,7 +11,7 @@
 //   }
 // }
 
-//  لل تجريب
+// //  لل تجريب
 import 'package:quran/data/models/main_data_model.dart';
 
 import '../models/student_model.dart';
@@ -40,6 +40,31 @@ class MainRepository {
           name: "فهد صالح",
           image: "https://via.placeholder.com/150",
           grade: "الصف السادس",
+        ),
+        StudentModel(
+          name: "علي محمد",
+          image: "https://via.placeholder.com/150",
+          grade: "الصف الرابع",
+        ),
+        StudentModel(
+          name: "علي محمد",
+          image: "https://via.placeholder.com/150",
+          grade: "الصف الرابع",
+        ),
+        StudentModel(
+          name: "علي محمد",
+          image: "https://via.placeholder.com/150",
+          grade: "الصف الرابع",
+        ),
+        StudentModel(
+          name: "علي محمد",
+          image: "https://via.placeholder.com/150",
+          grade: "الصف الرابع",
+        ),
+        StudentModel(
+          name: "علي محمد",
+          image: "https://via.placeholder.com/150",
+          grade: "الصف الرابع",
         ),
       ],
     );

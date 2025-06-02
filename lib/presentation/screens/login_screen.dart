@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
-                Navigator.pushReplacementNamed(context, '/main');
+                Navigator.pushReplacementNamed(context, '/home');
               } else if (state is AuthFailure) {
                 // ScaffoldMessenger.of(context).showSnackBar(
                 //   SnackBar(content: Text(state.message)),
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                
                 // للتجريب
 
-                 Navigator.pushReplacementNamed(context, '/main');
+                 Navigator.pushReplacementNamed(context, '/home');
               }
             },
             builder: (context, state) {
