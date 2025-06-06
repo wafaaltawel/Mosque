@@ -14,7 +14,7 @@
 // //  لل تجريب
 import 'package:quran/data/models/main_data_model.dart';
 
-import '../models/student_model.dart';
+import '../models/studentinfo_model.dart';
 
 class MainRepository {
   Future<MainDataModel> getMainData() async {
@@ -26,42 +26,42 @@ class MainRepository {
       className: "حلقة النور",
       teacherName: "الشيخ أحمد",
       students: [
-        StudentModel(
+        StudentInfoModel(
           name: "علي محمد",
           image: "https://via.placeholder.com/150",
           grade: "الصف الرابع",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "سعيد عبد الله",
           image: "https://via.placeholder.com/150",
           grade: "الصف الخامس",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "فهد صالح",
           image: "https://via.placeholder.com/150",
           grade: "الصف السادس",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "علي محمد",
           image: "https://via.placeholder.com/150",
           grade: "الصف الرابع",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "علي محمد",
           image: "https://via.placeholder.com/150",
           grade: "الصف الرابع",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "علي محمد",
           image: "https://via.placeholder.com/150",
           grade: "الصف الرابع",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "علي محمد",
           image: "https://via.placeholder.com/150",
           grade: "الصف الرابع",
         ),
-        StudentModel(
+        StudentInfoModel(
           name: "علي محمد",
           image: "https://via.placeholder.com/150",
           grade: "الصف الرابع",

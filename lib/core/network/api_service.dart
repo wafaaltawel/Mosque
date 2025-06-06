@@ -23,4 +23,22 @@ class ApiService {
     ); // ✨ غيّر النهاية حسب APIك
     return ListeningModel.fromJson(response.data);
   }
+
+
+  Future<void> startListeningSession({
+  required int studentId,
+  required int startPage,
+  required int endPage,
+}) async {
+  final data = {
+    'student_id': studentId,
+    'start_page': startPage,
+    'end_page': endPage,
+  };
+
+  await dio.post('/start-listening-session', data: data); // غيّر الرابط إذا لزم
+}
+
+  Future get(String s) async {}
+
 }
