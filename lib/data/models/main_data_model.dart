@@ -1,10 +1,10 @@
-import 'student_model.dart';
+import 'studentinfo_model.dart';
 
 class MainDataModel {
   final String mosqueName;
   final String className;
   final String teacherName;
-  final List<StudentModel> students;
+  final List<StudentInfoModel> students;
 
   MainDataModel({
     required this.mosqueName,
@@ -19,7 +19,7 @@ class MainDataModel {
       className: json['class_name'],
       teacherName: json['teacher_name'],
       students: (json['students'] as List)
-          .map((e) => StudentModel.fromJson(e))
+          .map((e) => StudentInfoModel.fromJson(e))
           .toList(),
     );
   }

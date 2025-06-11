@@ -1,19 +1,13 @@
 class StudentModel {
+  final int id;
   final String name;
-  final String image;
-  final String grade;
 
-  StudentModel({
-    required this.name,
-    required this.image,
-    required this.grade,
-  });
+  StudentModel({required this.id, required this.name});
 
   factory StudentModel.fromJson(Map<String, dynamic> json) {
     return StudentModel(
+      id: json['id'],
       name: json['name'],
-      image: json['image'],
-      grade: json['grade'],
     );
   }
 }

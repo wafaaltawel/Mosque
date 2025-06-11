@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/student_model.dart'; // تأكد من المسار الصحيح
+import '../../../data/models/studentinfo_model.dart'; // تأكد من المسار الصحيح
 
 class StudentsList extends StatelessWidget {
-  final List<StudentModel> students;
+  final List<StudentInfoModel> students;
 
   const StudentsList({super.key, required this.students});
 
