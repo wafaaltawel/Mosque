@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/core/constants/appBar.dart';
+import 'package:quran/core/constants/bottomNavigation.dart';
 import 'package:quran/core/network/api_service.dart';
 import 'package:quran/core/network/dio_helper.dart';
 import 'package:quran/data/repositories/listening_repository.dart';
@@ -11,6 +13,8 @@ import 'package:quran/presentation/blocs/main_event.dart';
 import 'package:quran/presentation/blocs/main_state.dart';
 import 'package:quran/presentation/screens/listening_screen.dart';
 import 'package:quran/presentation/screens/main_screen.dart';
+// استورد صفحة الحضور
+import 'package:quran/presentation/screens/attendance_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,9 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // listeningRepo = ListeningRepository(apiService);
     // تجريب
     mainRepo = MainRepository();
-
     listeningRepo = ListeningRepository();
-    //
   }
 
   @override
@@ -50,55 +52,30 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: Scaffold(
         backgroundColor: const Color(0xfff3f6fb),
-        appBar: AppBar(
-          backgroundColor: Color(0xFF2b836b),
-          elevation: 0,
-          centerTitle: true,
-          title: BlocBuilder<MainBloc, MainState>(
-            builder: (context, state) {
-              if (state is MainLoaded) {
-                return Text(
-                  state.data.mosqueName,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              }
-              return const Text("", style: TextStyle(color: Colors.black));
-            },
-          ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Icon(Icons.menu, color: Colors.black),
-            ),
-          ],
-          leading: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Icon(Icons.notifications_none, color: Colors.black),
-          ),
-        ),
+
+        appBar: CustomAppBar(),
+
         body: IndexedStack(
           index: currentIndex,
           children: const [
             ListeningScreen(),
             MainScreen(),
-            Center(child: Text("صفحة الحضور")), // مؤقتًا
+            Center(child: Text("صفحة الحضور")), // مؤقتًا، ما عاد نستخدمها
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
+
+        bottomNavigationBar: Bottomnavigation(
           currentIndex: currentIndex,
-          selectedItemColor: const Color(0xFF2b836b),
-          unselectedItemColor: Colors.grey,
           onTap: (index) {
-            setState(() => currentIndex = index);
+            if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AttendancePage()),
+              );
+            } else {
+              setState(() => currentIndex = index);
+            }
           },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'التسميع'),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
-            BottomNavigationBarItem(icon: Icon(Icons.check), label: 'الحضور'),
-          ],
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:quran/data/repositories/main_repositries.dart';
 import 'package:quran/presentation/blocs/auth/auth_bloc.dart';
 import 'package:quran/presentation/blocs/main_bloc.dart';
 import 'package:quran/presentation/blocs/main_event.dart';
+import 'package:quran/presentation/screens/attendance_screen.dart';
 import 'package:quran/presentation/screens/home_screen.dart';
 import 'package:quran/presentation/screens/login_screen.dart';
 import 'package:quran/presentation/screens/main_screen.dart';
@@ -23,7 +24,7 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthBloc(authRepo)),
-       // BlocProvider(create: (_) => MainBloc(mainRepo)..add(LoadMainData())),
+        // BlocProvider(create: (_) => MainBloc(mainRepo)..add(LoadMainData())),
       ],
       child: const MyApp(),
     ),
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/': (_) => const LoginScreen(),
         '/home': (_) => const HomeScreen(), // <- تغيير هنا
         '/main': (_) => const MainScreen(), // ✅ أضف هذا السطر لحل المشكلة
+        '/attendance': (_) => const AttendancePage(),
       },
     );
   }
