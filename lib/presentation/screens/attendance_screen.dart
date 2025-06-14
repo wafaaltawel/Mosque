@@ -28,8 +28,7 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-
+    
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -59,16 +58,7 @@ class _AttendancePageState extends State<AttendancePage> {
         ),
       ),
 
-      bottomNavigationBar: Bottomnavigation(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          if (index == 2) return;
-          setState(() {
-            currentIndex = index;
-          });
-          Navigator.pop(context); // رجوع للصفحة السابقة
-        },
-      ),
+     
     );
   }
 }

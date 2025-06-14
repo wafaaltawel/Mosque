@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:quran/core/constants/baseUrl.dart';
 import 'package:quran/data/models/listening_model.dart';
 import '../../data/models/main_data_model.dart';
 
@@ -13,13 +14,13 @@ class ApiService {
   }
 
   Future<MainDataModel> fetchMainData() async {
-    final response = await dio.get('/main-data'); // ✨ غيّر النهاية حسب APIك
+    final response = await dio.get('${AppConstants.baseUrl}/main-data'); // ✨ غيّر النهاية حسب APIك
     return MainDataModel.fromJson(response.data);
   }
 
   Future<ListeningModel> fetchListeningData() async {
     final response = await dio.get(
-      '//listening-data',
+      '${AppConstants.baseUrl}/listening-data',
     ); // ✨ غيّر النهاية حسب APIك
     return ListeningModel.fromJson(response.data);
   }
@@ -36,9 +37,12 @@ class ApiService {
     'end_page': endPage,
   };
 
-  await dio.post('/start-listening-session', data: data); // غيّر الرابط إذا لزم
+  await dio.post('${AppConstants.baseUrl}/start-listening-session', data: data); // غيّر الرابط إذا لزم
 }
 
-  Future get(String s) async {}
+   Future<dynamic> get(String url, {Options? options}) async {
+    final response = await dio.get(url, options: options);
+    return response.data;
+  }
 
 }

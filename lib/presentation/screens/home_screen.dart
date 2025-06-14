@@ -57,25 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
         body: IndexedStack(
           index: currentIndex,
-          children: const [
-            ListeningScreen(),
-            MainScreen(),
-            Center(child: Text("صفحة الحضور")), // مؤقتًا، ما عاد نستخدمها
-          ],
+          children: const [ListeningScreen(), MainScreen(), AttendancePage()],
         ),
 
-        bottomNavigationBar: Bottomnavigation(
+        bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
+          selectedItemColor: const Color(0xFF2b836b),
+          unselectedItemColor: Colors.grey,
           onTap: (index) {
-            if (index == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AttendancePage()),
-              );
-            } else {
-              setState(() => currentIndex = index);
-            }
+            setState(() => currentIndex = index);
           },
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'التسميع'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
+            BottomNavigationBarItem(icon: Icon(Icons.check), label: 'الحضور'),
+          ],
         ),
       ),
     );

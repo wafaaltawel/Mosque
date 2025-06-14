@@ -31,13 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state is AuthSuccess) {
                 Navigator.pushReplacementNamed(context, '/home');
               } else if (state is AuthFailure) {
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(content: Text(state.message)),
-                // );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.message)),
+                );
                
                 // للتجريب
 
-                 Navigator.pushReplacementNamed(context, '/home');
+                 //Navigator.pushReplacementNamed(context, '/home');
               }
             },
             builder: (context, state) {
