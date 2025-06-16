@@ -12,14 +12,16 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff3f6fb),
-      
+
       body: BlocBuilder<MainBloc, MainState>(
         builder: (context, state) {
           if (state is MainLoaded) {
             return Column(
               children: [
                 ClassInfoCard(data: state.data),
-                Expanded(child: StudentsList(students: state.data.students)),
+                Expanded(
+                  child: StudentsList(students: state.data.groups[0].students),
+                ),
               ],
             );
           } else if (state is MainLoading) {
@@ -29,7 +31,6 @@ class MainScreen extends StatelessWidget {
           }
         },
       ),
-      
     );
   }
 }

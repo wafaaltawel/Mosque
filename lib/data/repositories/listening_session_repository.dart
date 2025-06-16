@@ -23,6 +23,7 @@
 
 //للتجريب
 
+import 'package:quran/data/models/main_data_model.dart';
 import 'package:quran/data/models/student_model.dart';
 
 class ListeningSessionRepository {
@@ -30,15 +31,15 @@ class ListeningSessionRepository {
   ListeningSessionRepository();
 
   /// بيانات مؤقتة للطلاب
-  Future<List<StudentModel>> fetchStudents() async {
-    await Future.delayed(const Duration(milliseconds: 500)); // محاكاة تأخير الشبكة
+  // Future<List<StudentModel>> fetchStudents() async {
+  //   await Future.delayed(const Duration(milliseconds: 500)); // محاكاة تأخير الشبكة
 
-    return [
-      StudentModel(id: 1, name: 'محمد أحمد',),
-      StudentModel(id: 2, name: 'سارة علي', ),
-      StudentModel(id: 3, name: 'خالد يوسف',),
-    ];
-  }
+  //   // return [
+  //   //   StudentModel(id: 1, name: 'محمد أحمد',),
+  //   //   StudentModel(id: 2, name: 'سارة علي', ),
+  //   //   StudentModel(id: 3, name: 'خالد يوسف',),
+  //   // ];
+  // }
 
   /// تنفيذ مؤقت لبدء الجلسة
   Future<void> startSession(int studentId, int startPage, int endPage) async {

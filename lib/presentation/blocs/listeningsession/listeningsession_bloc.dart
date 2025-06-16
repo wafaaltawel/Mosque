@@ -11,8 +11,8 @@ class ListeningSessionBloc extends Bloc<ListeningSessionEvent, ListeningSessionS
     on<LoadStudentsSessionEvent>((event, emit) async {
       emit(ListeningSessionLoading());
       try {
-        final students = await repository.fetchStudents();
-        emit(ListeningSessionLoaded(students));
+       // final students = await repository.fetchStudents();
+       // emit(ListeningSessionLoaded(students));
       } catch (e) {
         emit(ListeningSessionError("فشل في جلب الطلاب"));
       }

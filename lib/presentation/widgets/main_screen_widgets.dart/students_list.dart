@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quran/data/models/main_data_model.dart';
 import '../../../data/models/studentinfo_model.dart'; // تأكد من المسار الصحيح
 
 class StudentsList extends StatelessWidget {
-  final List<StudentInfoModel> students;
+  final List<StudentModel> students;
 
   const StudentsList({super.key, required this.students});
 
@@ -32,7 +33,7 @@ class StudentsList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
-                  student.grade,
+                  student.educationalClass ?? "لم يسجل",
                   style: const TextStyle(
                     color: Color(0xff00b9b0),
                   ),
@@ -40,7 +41,7 @@ class StudentsList extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  student.name,
+                 "E${student.firstName} ${student.lastName}",
                   textAlign: TextAlign.right,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -49,7 +50,7 @@ class StudentsList extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               CircleAvatar(
-                backgroundImage: NetworkImage(student.image),
+                backgroundImage: NetworkImage(student.imageUrl ?? 'https://via.placeholder.com/150'),
                 radius: 22,
               ),
             ],

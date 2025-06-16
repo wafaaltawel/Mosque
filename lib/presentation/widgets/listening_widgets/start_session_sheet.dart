@@ -45,24 +45,26 @@ class _StartSessionSheetState extends State<StartSessionSheet> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                DropdownButtonFormField<int>(
-                  value: selectedStudentId,
-                  items: state.students.map((StudentModel student) {
-                    return DropdownMenuItem<int>(
-                      value: student.id,
-                      child: Text(student.name),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedStudentId = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    labelText: "اسم الطالب",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+
+                //هون لل طلاب وقت التسميع
+                // DropdownButtonFormField<int>(
+                //   value: selectedStudentId,
+                //   items: state.students.map((StudentModel student) {
+                //     return DropdownMenuItem<int>(
+                //       value: student.id,
+                //       child: Text(student.name),
+                //     );
+                //   }).toList(),
+                //   onChanged: (value) {
+                //     setState(() {
+                //       selectedStudentId = value;
+                //     });
+                //   },
+                //   decoration: const InputDecoration(
+                //     labelText: "اسم الطالب",
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
                 const SizedBox(height: 12),
                 Row(
                   children: [

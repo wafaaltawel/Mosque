@@ -1,3 +1,3 @@
 abstract class TeacherEvent {}
 
-class FetchTeacherProfile extends TeacherEvent {}
+class LoadTeacherProfile extends TeacherEvent {}

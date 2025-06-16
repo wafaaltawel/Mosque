@@ -1,4 +1,3 @@
-
 import 'package:quran/data/models/teachermodel.dart';
 
 abstract class TeacherState {}

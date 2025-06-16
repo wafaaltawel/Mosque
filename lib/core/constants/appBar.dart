@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         builder: (context, state) {
           if (state is MainLoaded) {
             return Text(
-              state.data.mosqueName,
+              state.data.otherMosqueNames ?? 'لا يوجد',
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

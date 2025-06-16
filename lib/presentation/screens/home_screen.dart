@@ -11,6 +11,8 @@ import 'package:quran/presentation/blocs/listening/listening_event.dart';
 import 'package:quran/presentation/blocs/main_bloc.dart';
 import 'package:quran/presentation/blocs/main_event.dart';
 import 'package:quran/presentation/blocs/main_state.dart';
+import 'package:quran/presentation/blocs/teacher/teacher_bloc.dart';
+import 'package:quran/presentation/blocs/teacher/teacher_event.dart';
 import 'package:quran/presentation/screens/listening_screen.dart';
 import 'package:quran/presentation/screens/main_screen.dart';
 // استورد صفحة الحضور
@@ -37,8 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // mainRepo = MainRepository(apiService);
     // listeningRepo = ListeningRepository(apiService);
     // تجريب
-    mainRepo = MainRepository();
+    mainRepo = MainRepository(apiService);
     listeningRepo = ListeningRepository();
+    context.read<TeacherBloc>().add(LoadTeacherProfile());
   }
 
   @override

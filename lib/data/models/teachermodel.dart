@@ -58,8 +58,9 @@ class TeacherModel {
   });
 
   factory TeacherModel.fromJson(Map<String, dynamic> json) {
+  try {
     return TeacherModel(
-      id: json['id'],
+      id: json['id'] ?? 0,
       educationalLevel: json['educational_level'],
       universityName: json['university_name'],
       collegeName: json['college_name'],
@@ -87,5 +88,10 @@ class TeacherModel {
       updatedAt: json['updated_at'] ?? '',
       userType: json['userType'] ?? '',
     );
+  } catch (e) {
+    print('❌ خطأ في fromJson: $e');
+    rethrow;
   }
+}
+
 }

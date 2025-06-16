@@ -20,11 +20,11 @@ class ClassInfoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            data.className,
+            data.groups[0].title,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
-            data.teacherName,
+            "${data.firstName} ${data.lastName}",
             style: const TextStyle(fontSize: 14, color: Colors.grey),
           ),
         ],

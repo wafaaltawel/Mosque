@@ -7,14 +7,17 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   final MainRepository repo;
 
   MainBloc(this.repo) : super(MainInitial()) {
-    on<LoadMainData>((event, emit) async {
-      emit(MainLoading());
-      try {
-        final data = await repo.getMainData();
-        emit(MainLoaded(data));
-      } catch (e) {
-        emit(MainError('فشل تحميل البيانات'));
-      }
-    });
+   on<LoadMainData>((event, emit) async {
+  emit(MainLoading());
+  try {
+    final data = await repo.getMainData();
+    emit(MainLoaded(data));
+  } catch (e, stackTrace) {
+    print("❌ Error: $e");
+    print("📌 StackTrace: $stackTrace");
+    emit(MainError('فشل تحميل البيانات'));
+  }
+}
+);
   }
 }
