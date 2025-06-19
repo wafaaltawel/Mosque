@@ -30,7 +30,8 @@ class _AttendancePageState extends State<AttendanceScreen> {
       padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          const Text('التفقد والحضور', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const Text('التفقد والحضور',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           Expanded(
             child: ListView.separated(
@@ -48,7 +49,7 @@ class _AttendancePageState extends State<AttendanceScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Row(
+                      Row(
                         children: [
                           _statusButton('متأخر', 500, selected, s.id, Colors.orange),
                           _statusButton('غائب', 1000, selected, s.id, Colors.pink),
@@ -58,11 +59,11 @@ class _AttendancePageState extends State<AttendanceScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text("${s.firstName} ${s.lastName}", style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Text(s.educationalClass??"لم يحدد"),
+                          Text("${s.firstName} ${s.lastName}",
+                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(s.educationalClass ?? "لم يحدد"),
                         ],
                       ),
-                     
                     ],
                   ),
                 );
@@ -73,13 +74,17 @@ class _AttendancePageState extends State<AttendanceScreen> {
           ElevatedButton(
             onPressed: () {
               final now = DateTime.now();
-              final list = delays.entries.map((e) => AttendanceModel(
-                    studentId: e.key,
-                    campaignId: campaignId,
-                    groupId: groupId,
-                    takenDate: now,
-                    delay: e.value,
-                  )).toList();
+              final list = delays.entries
+                  .map(
+                    (e) => AttendanceModel(
+                      studentId: e.key,
+                      campaignId: campaignId,
+                      groupId: groupId,
+                      takenDate: now,
+                      delay: e.value,
+                    ),
+                  )
+                  .toList();
               context.read<AttendanceBloc>().add(SubmitAttendance(list));
             },
             child: const Text('إرسال'),
@@ -89,7 +94,50 @@ class _AttendancePageState extends State<AttendanceScreen> {
     );
   }
 
-  Widget _statusButton(String label, int delayValue, int? selected, int studentId, Color color) {
+  Widget _statusButton(
+      String label, int delayValue, int? selected, int studentId, Color color) {
+    // زر "متأخر" يفتح اختيار مقدار التأخير
+    if (delayValue == 500) {
+      final isSelected = selected != null && selected > 0 && selected <= 90;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: GestureDetector(
+          onTap: () async {
+            final chosenDelay = await showModalBottomSheet<int>(
+              context: context,
+              builder: (context) {
+                final options = [5, 10, 15, 20, 30, 45, 60, 90];
+                return ListView(
+                  children: options
+                      .map((minute) => ListTile(
+                            title: Text('دقائق $minute '),
+                            onTap: () => Navigator.pop(context, minute),
+                          ))
+                      .toList(),
+                );
+              },
+            );
+
+            if (chosenDelay != null) {
+              setDelay(studentId, chosenDelay);
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: isSelected ? color : Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            child: Text(
+              isSelected ? 'متأخر ($selected د)' : label,
+              style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // باقي الأزرار عادية بدون تغيير
     final isSelected = delayValue == selected;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -101,7 +149,8 @@ class _AttendancePageState extends State<AttendanceScreen> {
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          child: Text(label, style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
+          child: Text(label,
+              style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
         ),
       ),
     );
