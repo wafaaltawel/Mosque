@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/presentation/widgets/main_screen_widgets.dart/class_info_card.dart';
 import 'package:quran/presentation/widgets/main_screen_widgets.dart/students_list.dart';
-import '../blocs/main_bloc.dart';
-import '../blocs/main_state.dart';
+import '../blocs/main/main_bloc.dart';
+import '../blocs/main/main_state.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});

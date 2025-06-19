@@ -22,7 +22,7 @@ class _AttendancePageState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final students = context.read<AttendanceBloc>().students ?? [];
+    final students = context.read<AttendanceBloc>().students;
     final campaignId = context.read<AttendanceBloc>().campaignId;
     final groupId = context.read<AttendanceBloc>().groupId;
 
@@ -75,8 +75,8 @@ class _AttendancePageState extends State<AttendanceScreen> {
               final now = DateTime.now();
               final list = delays.entries.map((e) => AttendanceModel(
                     studentId: e.key,
-                    campaignId: campaignId!,
-                    groupId: groupId!,
+                    campaignId: campaignId,
+                    groupId: groupId,
                     takenDate: now,
                     delay: e.value,
                   )).toList();

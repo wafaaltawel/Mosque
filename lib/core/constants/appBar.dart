@@ -1,7 +1,8 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/presentation/blocs/main_bloc.dart';
-import 'package:quran/presentation/blocs/main_state.dart';
+import 'package:quran/presentation/blocs/main/main_bloc.dart';
+import 'package:quran/presentation/blocs/main/main_state.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});

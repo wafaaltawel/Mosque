@@ -21,7 +21,7 @@ class ListeningSessionBloc extends Bloc<ListeningSessionEvent, ListeningSessionS
     on<StartSessionEvent>((event, emit) async {
       emit(ListeningSessionLoading());
       try {
-        await repository.startSession(event.studentId, event.startPage, event.endPage);
+        await repository.startSession(event.studentname, event.startPage, event.endPage);
         emit(ListeningSessionSuccess());
         add(LoadStudentsSessionEvent()); // إعادة تحميل عند نجاح
       } catch (e) {

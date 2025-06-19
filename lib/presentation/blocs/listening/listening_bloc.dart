@@ -15,6 +15,7 @@ class ListeningBloc extends Bloc<ListeningEvent, ListeningState> {
         // تجريب
          final data = await repository.fetchSessions();
         //  
+        // ignore: unnecessary_cast
         emit(ListeningLoaded(data as List<ListeningModel>));
       } catch (e) {
         emit(ListeningError("فشل تحميل جلسات التسميع"));

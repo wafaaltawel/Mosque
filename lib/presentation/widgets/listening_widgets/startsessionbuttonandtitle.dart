@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/core/network/api_service.dart';
-import 'package:quran/core/network/dio_helper.dart';
 import 'package:quran/data/repositories/listening_session_repository.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_bloc.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_event.dart';
+import 'package:quran/presentation/blocs/main/main_bloc.dart';
+import 'package:quran/presentation/blocs/main/main_state.dart';
 import 'package:quran/presentation/widgets/listening_widgets/start_session_sheet.dart';
 
 class StartSessionButtonAndTitle extends StatelessWidget {
@@ -25,19 +25,34 @@ class StartSessionButtonAndTitle extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              final dio = DioHelper.createDio();
-              final apiService = ApiService(dio);
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (_) => BlocProvider(
-                  create: (_) => ListeningSessionBloc(
-                    ListeningSessionRepository(),
-                  )..add(LoadStudentsSessionEvent()),
-                  child: const StartSessionSheet(),
-                ),
-              );
+              
+print("بدأ جلسة تسميع");
+              // 👇 اجلب الطلاب من MainBloc
+              final mainState = context.read<MainBloc>().state;
+              if (mainState is MainLoaded) {
+                final students = mainState.data.groups[0].students;
+                print(students);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => BlocProvider(
+                    create: (_) =>
+                        ListeningSessionBloc(ListeningSessionRepository())
+                          ..add(LoadStudentsSessionEvent()),
+                    child: StartSessionSheet(
+                      students: students,
+                    ), // ✅ تمرير الطلاب هنا
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('الرجاء الانتظار حتى تحميل البيانات'),
+                  ),
+                );
+              }
             },
+
             child: const Text(
               "بدء جلسة تسميع",
               style: TextStyle(fontSize: 14, color: Colors.white),

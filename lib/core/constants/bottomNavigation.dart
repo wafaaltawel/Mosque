@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quran/presentation/screens/attendance_screen.dart';
 
 class Bottomnavigation extends StatelessWidget {
   final int currentIndex;

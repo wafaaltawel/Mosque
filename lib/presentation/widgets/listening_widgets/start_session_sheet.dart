@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/data/models/student_model.dart';
+import 'package:quran/core/network/api_service.dart';
+import 'package:quran/core/network/dio_helper.dart';
+import 'package:quran/data/models/main_data_model.dart';
+import 'package:quran/data/repositories/session_repository.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_bloc.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_event.dart';
-import 'package:quran/presentation/blocs/listeningsession/listeningsession_state.dart';
+import 'package:quran/presentation/blocs/session/session_bloc.dart';
+import 'package:quran/presentation/screens/session_screen.dart';
+
+final dio = DioHelper.createDio(); // ✅ إنشاء Dio
+final apiService = ApiService(dio); // ✅ خدمة API
 
 class StartSessionSheet extends StatefulWidget {
-  const StartSessionSheet({super.key});
+  final List<StudentModel> students;
+
+  const StartSessionSheet({super.key, required this.students});
 
   @override
   State<StartSessionSheet> createState() => _StartSessionSheetState();
 }
 
 class _StartSessionSheetState extends State<StartSessionSheet> {
-  int? selectedStudentId;
+  String? selectedStudentname;
+  
   final TextEditingController startPageController = TextEditingController();
   final TextEditingController endPageController = TextEditingController();
 
@@ -26,45 +36,36 @@ class _StartSessionSheetState extends State<StartSessionSheet> {
         top: 16,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
       ),
-      child: BlocBuilder<ListeningSessionBloc, ListeningSessionState>(
-        builder: (context, state) {
-          if (state is ListeningSessionLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is ListeningSessionLoaded) {
-            return Column(
+      child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const Text(
                   "جلسة تسميع جديدة",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
 
-                //هون لل طلاب وقت التسميع
-                // DropdownButtonFormField<int>(
-                //   value: selectedStudentId,
-                //   items: state.students.map((StudentModel student) {
-                //     return DropdownMenuItem<int>(
-                //       value: student.id,
-                //       child: Text(student.name),
-                //     );
-                //   }).toList(),
-                //   onChanged: (value) {
-                //     setState(() {
-                //       selectedStudentId = value;
-                //     });
-                //   },
-                //   decoration: const InputDecoration(
-                //     labelText: "اسم الطالب",
-                //     border: OutlineInputBorder(),
-                //   ),
-                // ),
+                DropdownButtonFormField<String>(
+                  value: selectedStudentname,
+                  items: widget.students.map((StudentModel student) {
+                    return DropdownMenuItem<String>(
+                      value: student.firstName,
+                      child: Text(
+                        "${student.firstName} ${student.lastName ?? ''}",
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedStudentname = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: "اسم الطالب",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
@@ -96,49 +97,61 @@ class _StartSessionSheetState extends State<StartSessionSheet> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (selectedStudentId == null ||
+                      if (selectedStudentname == null ||
                           startPageController.text.isEmpty ||
                           endPageController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('يرجى تعبئة جميع الحقول')),
+                          const SnackBar(
+                            content: Text('يرجى تعبئة جميع الحقول'),
+                          ),
                         );
                         return;
                       }
 
-                      final int start = int.tryParse(startPageController.text) ?? 0;
+                      final int start =
+                          int.tryParse(startPageController.text) ?? 0;
                       final int end = int.tryParse(endPageController.text) ?? 0;
 
                       context.read<ListeningSessionBloc>().add(
-                            StartSessionEvent(
-                              studentId: selectedStudentId!,
+                        StartSessionEvent(
+                          studentname: selectedStudentname!,
+                          startPage: start,
+                          endPage: end,
+                        ),
+                      );
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (_) =>
+                                SessionBloc(repository: SessionRepository(apiService)),
+                            child: SessionScreen(
+                              studentName: selectedStudentname!,
                               startPage: start,
                               endPage: end,
                             ),
-                          );
-
-                      Navigator.pop(context);
+                          ),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
-                      
                       backgroundColor: Colors.teal,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text("بدء جلسة التسميع", style: TextStyle(color: Colors.white)),
+                    child: const Text(
+                      "بدء جلسة التسميع",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                )
+                ),
               ],
-            );
-          }
-
-          if (state is ListeningSessionError) {
-            return Center(child: Text(state.message));
-          }
-
-          return const SizedBox();
-        },
+            
+        
+        
       ),
     );
   }

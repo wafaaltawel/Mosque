@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quran/data/models/main_data_model.dart';
-import '../../../data/models/studentinfo_model.dart'; // تأكد من المسار الصحيح
 
 class StudentsList extends StatelessWidget {
   final List<StudentModel> students;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/main_bloc.dart';
-import '../../blocs/main_state.dart';
+import '../../blocs/main/main_bloc.dart';
+import '../../blocs/main/main_state.dart';
 
 class MainAppBar extends StatelessWidget {
   const MainAppBar({super.key});

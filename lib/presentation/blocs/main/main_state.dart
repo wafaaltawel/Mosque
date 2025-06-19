@@ -1,4 +1,4 @@
-import '../../data/models/main_data_model.dart';
+import '../../../data/models/main_data_model.dart';
 
 abstract class MainState {}
 
