@@ -10,13 +10,13 @@ class ApiService {
   ApiService(this.dio);
 
   Future<dynamic> post(
-    String path, {
-    Map<String, dynamic>? data,
-    Options? options, // ✳️ أضف هذا
-  }) async {
-    final response = await dio.post(path, data: data, options: options);
-    return response.data;
-  }
+  String path, {
+  dynamic data,
+  Options? options,
+}) async {
+  final response = await dio.post(path, data: data, options: options);
+  return response.data;
+}
 
   Future<MainDataModel> fetchMainData() async {
     final teacherId = await SessionManager.getTeacherId(); // 🔥 نحصل على ID

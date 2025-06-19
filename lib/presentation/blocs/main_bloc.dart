@@ -15,7 +15,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   } catch (e, stackTrace) {
     print("❌ Error: $e");
     print("📌 StackTrace: $stackTrace");
-    emit(MainError('فشل تحميل البيانات'));
+    emit(MainError(""));
   }
 }
 );
