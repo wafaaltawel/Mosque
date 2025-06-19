@@ -96,6 +96,7 @@ class _SessionScreenState extends State<SessionScreen> {
                   children: [
                     _customButton('إنهاء الجلسة', () {
                       context.read<SessionBloc>().add(EndSession());
+                      Navigator.pop(context);
                     }),
                     _customButton('إنهاء الصفحة', () {
                       context.read<SessionBloc>().add(EndPage());
