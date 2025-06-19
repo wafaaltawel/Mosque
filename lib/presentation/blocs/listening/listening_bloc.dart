@@ -9,17 +9,14 @@ class ListeningBloc extends Bloc<ListeningEvent, ListeningState> {
 
   ListeningBloc(this.repository) : super(ListeningInitial()) {
     on<LoadListening>((event, emit) async {
-      emit(ListeningLoading());
-      try {
-        // final data = await repository.getListeningData();
-        // تجريب
-         final data = await repository.fetchSessions();
-        //  
-        // ignore: unnecessary_cast
-        emit(ListeningLoaded(data as List<ListeningModel>));
-      } catch (e) {
-        emit(ListeningError("فشل تحميل جلسات التسميع"));
-      }
-    });
+  emit(ListeningLoading());
+  try {
+    final data = await repository.getListeningData(); // ✅ List<ListeningModel>
+    emit(ListeningLoaded(data));
+  } catch (e) {
+    emit(ListeningError("فشل تحميل جلسات التسميع: $e"));
+  }
+});
+
   }
 }

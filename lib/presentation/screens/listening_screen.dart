@@ -24,7 +24,7 @@ class ListeningScreen extends StatelessWidget {
               children: [
                 const ListeningInfoBanner(),
                 const StartSessionButtonAndTitle(),
-                const StudentNameFilterInput(),
+               // const StudentNameFilterInput(),
                 Expanded(
                   child: ListView.builder(
                     itemCount: state.listening.length,

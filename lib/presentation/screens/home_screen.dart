@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final apiService = ApiService(dio);
 
     mainRepo = MainRepository(apiService);
-    listeningRepo = ListeningRepository();
+    listeningRepo = ListeningRepository(apiService);
     attendanceRepo = AttendanceRepository(apiService);
 
     // تحميل بيانات الأستاذ

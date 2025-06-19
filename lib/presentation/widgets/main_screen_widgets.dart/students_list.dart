@@ -40,7 +40,7 @@ class StudentsList extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                 "E${student.firstName} ${student.lastName}",
+                 "${student.firstName} ${student.lastName}",
                   textAlign: TextAlign.right,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,

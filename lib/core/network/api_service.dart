@@ -31,12 +31,25 @@ class ApiService {
     return MainDataModel.fromJson(response.data);
   }
 
-  Future<ListeningModel> fetchListeningData() async {
-    final response = await dio.get(
-      '${AppConstants.baseUrl}/listening-data',
-    ); // ✨ غيّر النهاية حسب APIك
-    return ListeningModel.fromJson(response.data);
+  Future<List<ListeningModel>> fetchListeningData() async {
+  final teacherId = await SessionManager.getTeacherId();
+  if (teacherId == null) {
+    throw Exception("Teacher ID is null. Please login again.");
   }
+
+  final response = await dio.get(
+    '${AppConstants.baseUrl}/saving-sessions/filter?dateTo=2025-12-31&dateFrom=2024-01-01&teacherId=$teacherId',
+  );
+
+  final data = response.data;
+
+  if (data is List) {
+    return data.map((item) => ListeningModel.fromJson(item)).toList();
+  } else {
+    throw Exception("Unexpected response format: expected a list");
+  }
+}
+
 
   Future<void> startListeningSession({
     required int studentId,
