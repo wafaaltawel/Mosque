@@ -14,7 +14,7 @@ class ListeningInfoBanner extends StatelessWidget {
           const SizedBox(width: 8),
           const Expanded(
             child: Text(
-              "تقوم هذه الصفحة بعرض جميع جلسات التسميع لليوم المحدد",
+              "تقوم هذه الصفحة بعرض جميع جلسات التسميع",
               style: TextStyle(color: Colors.black87, fontSize: 14),
               textDirection: TextDirection.rtl,
             ),

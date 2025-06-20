@@ -51,12 +51,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'منصة الحلقات',
-      theme: ThemeData(fontFamily: 'Cairo'), // اختياري
+      theme: ThemeData(fontFamily: 'Cairo'), 
       routes: {
         '/':(_) => const SplashScreen(),
         '/login': (_) => const LoginScreen(),
-        '/home': (_) => const HomeScreen(), // <- تغيير هنا
-        '/main': (_) => const MainScreen(), // ✅ أضف هذا السطر لحل المشكلة
+        '/home': (_) => const HomeScreen(),
+        '/main': (_) => const MainScreen(), 
         '/attendance': (_) => const AttendanceScreen(),
       },
     );

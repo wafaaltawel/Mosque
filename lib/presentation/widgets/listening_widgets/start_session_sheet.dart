@@ -4,6 +4,8 @@ import 'package:quran/core/network/api_service.dart';
 import 'package:quran/core/network/dio_helper.dart';
 import 'package:quran/data/models/main_data_model.dart';
 import 'package:quran/data/repositories/session_repository.dart';
+import 'package:quran/presentation/blocs/listening/listening_bloc.dart';
+import 'package:quran/presentation/blocs/listening/listening_event.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_bloc.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_event.dart';
 import 'package:quran/presentation/blocs/session/session_bloc.dart';
@@ -93,60 +95,63 @@ class _StartSessionSheetState extends State<StartSessionSheet> {
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                if (selectedStudent == null ||
-                    startPageController.text.isEmpty ||
-                    endPageController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('يرجى تعبئة جميع الحقول')),
-                  );
-                  return;
-                }
+            child: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () async {
+                    if (selectedStudent == null ||
+                        startPageController.text.isEmpty ||
+                        endPageController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('يرجى تعبئة جميع الحقول')),
+                      );
+                      return;
+                    }
 
-                final int start = int.tryParse(startPageController.text) ?? 0;
-                final int end = int.tryParse(endPageController.text) ?? 0;
-print("✅ تم اختيار الطالب: ${selectedStudent!.firstName}, ID: ${selectedStudent!.id}");
+                    final int start =
+                        int.tryParse(startPageController.text) ?? 0;
+                    final int end = int.tryParse(endPageController.text) ?? 0;
 
-                context.read<ListeningSessionBloc>().add(
-                  StartSessionEvent(
-                    studentid: selectedStudent!.id, // إرسال ID الطالب الصحيح
-                    studentname:
-                        "${selectedStudent!.firstName} ${selectedStudent!.lastName ?? ''}",
-                    startPage: start,
-                    endPage: end,
-                  ),
-                );
+                    // ✅ إغلاق الـ BottomSheet
+                    Navigator.pop(context);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      create: (_) => SessionBloc(
-                        repository: SessionRepository(apiService),
+                    // ✅ فتح SessionScreen وانتظار النتيجة
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (_) => SessionBloc(
+                            repository: SessionRepository(apiService),
+                          ),
+                          child: SessionScreen(
+                            studentName:
+                                "${selectedStudent!.firstName} ${selectedStudent!.lastName ?? ''}",
+                            startPage: start,
+                            endPage: end,
+                            studentid: selectedStudent!.id,
+                          ),
+                        ),
                       ),
-                      child: SessionScreen(
-                        studentName:
-                            "${selectedStudent!.firstName} ${selectedStudent!.lastName ?? ''}",
-                        startPage: start,
-                        endPage: end,
-                        studentid: selectedStudent!.id, // إرسال ID هنا أيضاً
-                      ),
+                    );
+
+                    // ✅ إذا رجعنا بـ true، نعيد تحميل بيانات Listening
+                    if (result == true && context.mounted) {
+                      context.read<ListeningBloc>().add(LoadListening());
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
+                  ),
+                  child: const Text(
+                    "بدء جلسة التسميع",
+                    style: TextStyle(color: Colors.white),
                   ),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                "بدء جلسة التسميع",
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           ),
         ],

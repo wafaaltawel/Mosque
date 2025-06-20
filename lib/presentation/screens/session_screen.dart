@@ -91,7 +91,21 @@ class _SessionScreenState extends State<SessionScreen> {
                   children: [
                     _customButton('إنهاء الجلسة', () {
                       context.read<SessionBloc>().add(EndSession());
-                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('تم تسجيل الجلسة بنجاح'),
+                          backgroundColor: Colors.green,
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+
+                      Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.pop(
+                          context,
+                          true,
+                        ); // نرجع بقيمة true بعد إظهار الرسالة
+                      });
                     }),
                     _customButton('إنهاء الصفحة', () {
                       context.read<SessionBloc>().add(EndPage());
@@ -245,7 +259,6 @@ class _SessionDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final heardPages = state.currentPage - state.startPage;
-
 
     return Container(
       width: double.infinity,
