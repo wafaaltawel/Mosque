@@ -6,6 +6,7 @@ import 'package:quran/presentation/blocs/session/session_event.dart';
 import 'package:quran/presentation/blocs/session/session_state.dart';
 
 class SessionScreen extends StatefulWidget {
+  final int studentid;
   final String studentName;
   final int startPage;
   final int endPage;
@@ -15,6 +16,7 @@ class SessionScreen extends StatefulWidget {
     required this.studentName,
     required this.startPage,
     required this.endPage,
+    required this.studentid,
   });
 
   @override
@@ -22,7 +24,6 @@ class SessionScreen extends StatefulWidget {
 }
 
 class _SessionScreenState extends State<SessionScreen> {
-  @override
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,7 @@ class _SessionScreenState extends State<SessionScreen> {
         studentName: widget.studentName,
         startPage: widget.startPage,
         endPage: widget.endPage,
+        studentid: widget.studentid,
       ),
     );
   }
@@ -43,29 +45,23 @@ class _SessionScreenState extends State<SessionScreen> {
         builder: (context, state) {
           return Container(
             width: double.infinity,
-            color: const Color(0xFF2b836b), // الخلفية الخضراء
+            color: const Color(0xFF2b836b),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
             child: Column(
               children: [
                 Align(
-                  alignment: Alignment
-                      .topRight, // أو Alignment.topLeft للغة الإنجليزية
+                  alignment: Alignment.topRight,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                
-
-                Spacer(),
-                // المؤقت الدائري
+                const Spacer(),
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFF2b836b),
+                    color: const Color(0xFF2b836b),
                     border: Border.all(color: Colors.white, width: 4),
                   ),
                   child: Column(
@@ -90,7 +86,6 @@ class _SessionScreenState extends State<SessionScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // الأزرار
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -112,7 +107,6 @@ class _SessionScreenState extends State<SessionScreen> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                // معلومات الجلسة
                 _SessionDetails(state: state),
                 const Spacer(),
               ],
@@ -143,23 +137,99 @@ class _SessionScreenState extends State<SessionScreen> {
 
   Future<SessionErrorModel?> _showErrorDialog(BuildContext context) async {
     final errors = await context.read<SessionBloc>().repository.fetchErrors();
+    final TextEditingController pageController = TextEditingController();
+    SessionErrorModel? selectedError;
 
     return showDialog<SessionErrorModel>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('اختر الخطأ'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: errors.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(errors[index].description),
-                  onTap: () => Navigator.pop(context, errors[index]),
-                );
-              },
+        return StatefulBuilder(
+          builder: (context, setState) => Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'إضافة خطأ',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: Text("اختر نوع الخطأ:"),
+                    ),
+                    SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        itemCount: errors.length,
+                        itemBuilder: (context, index) {
+                          return RadioListTile<SessionErrorModel>(
+                            title: Text(errors[index].title),
+                            value: errors[index],
+                            groupValue: selectedError,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedError = value;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: pageController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'رقم الصفحة',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('إلغاء'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (selectedError == null ||
+                                pageController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("اختر الخطأ وأدخل رقم الصفحة"),
+                                ),
+                              );
+                              return;
+                            }
+
+                            final int page =
+                                int.tryParse(pageController.text) ?? 0;
+
+                            final errorWithPage = SessionErrorModel(
+                              id: selectedError!.id,
+                              campaignId: selectedError!.campaignId,
+                              title: selectedError!.title,
+                              removedPoints: selectedError!.removedPoints,
+                              pageNumber: page,
+                            );
+
+                            Navigator.pop(context, errorWithPage);
+                          },
+                          child: const Text('إضافة'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
@@ -174,7 +244,8 @@ class _SessionDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final heardPages = state.endPage - state.startPage;
+    final heardPages = state.currentPage - state.startPage;
+
 
     return Container(
       width: double.infinity,
@@ -197,9 +268,7 @@ class _SessionDetails extends StatelessWidget {
                       'اسم الطالب',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text(
-                      state.studentName,
-                    ), // اسم ثابت حالياً، غيّره حسب ما تريد
+                    Text(state.studentname),
                   ],
                 ),
               ),

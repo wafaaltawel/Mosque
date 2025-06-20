@@ -22,8 +22,8 @@ class StartSessionSheet extends StatefulWidget {
 }
 
 class _StartSessionSheetState extends State<StartSessionSheet> {
-  String? selectedStudentname;
-  
+  StudentModel? selectedStudent;
+
   final TextEditingController startPageController = TextEditingController();
   final TextEditingController endPageController = TextEditingController();
 
@@ -37,121 +37,119 @@ class _StartSessionSheetState extends State<StartSessionSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
       ),
       child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Text(
-                  "جلسة تسميع جديدة",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 12),
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const Text(
+            "جلسة تسميع جديدة",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
 
-                DropdownButtonFormField<String>(
-                  value: selectedStudentname,
-                  items: widget.students.map((StudentModel student) {
-                    return DropdownMenuItem<String>(
-                      value: student.firstName,
-                      child: Text(
-                        "${student.firstName} ${student.lastName ?? ''}",
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedStudentname = value;
-                    });
-                  },
+          DropdownButtonFormField<StudentModel>(
+            value: selectedStudent,
+            items: widget.students.map((StudentModel student) {
+              return DropdownMenuItem<StudentModel>(
+                value: student,
+                child: Text("${student.firstName} ${student.lastName ?? ''}"),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedStudent = value;
+              });
+            },
+            decoration: const InputDecoration(
+              labelText: "اسم الطالب",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: startPageController,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: "اسم الطالب",
+                    labelText: "صفحة البداية",
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: startPageController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: "صفحة البداية",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: endPageController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: "صفحة النهاية",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (selectedStudentname == null ||
-                          startPageController.text.isEmpty ||
-                          endPageController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('يرجى تعبئة جميع الحقول'),
-                          ),
-                        );
-                        return;
-                      }
-
-                      final int start =
-                          int.tryParse(startPageController.text) ?? 0;
-                      final int end = int.tryParse(endPageController.text) ?? 0;
-
-                      context.read<ListeningSessionBloc>().add(
-                        StartSessionEvent(
-                          studentname: selectedStudentname!,
-                          startPage: start,
-                          endPage: end,
-                        ),
-                      );
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (_) =>
-                                SessionBloc(repository: SessionRepository(apiService)),
-                            child: SessionScreen(
-                              studentName: selectedStudentname!,
-                              startPage: start,
-                              endPage: end,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      "بدء جلسة التسميع",
-                      style: TextStyle(color: Colors.white),
-                    ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: TextField(
+                  controller: endPageController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "صفحة النهاية",
+                    border: OutlineInputBorder(),
                   ),
                 ),
-              ],
-            
-        
-        
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                if (selectedStudent == null ||
+                    startPageController.text.isEmpty ||
+                    endPageController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('يرجى تعبئة جميع الحقول')),
+                  );
+                  return;
+                }
+
+                final int start = int.tryParse(startPageController.text) ?? 0;
+                final int end = int.tryParse(endPageController.text) ?? 0;
+print("✅ تم اختيار الطالب: ${selectedStudent!.firstName}, ID: ${selectedStudent!.id}");
+
+                context.read<ListeningSessionBloc>().add(
+                  StartSessionEvent(
+                    studentid: selectedStudent!.id, // إرسال ID الطالب الصحيح
+                    studentname:
+                        "${selectedStudent!.firstName} ${selectedStudent!.lastName ?? ''}",
+                    startPage: start,
+                    endPage: end,
+                  ),
+                );
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (_) => SessionBloc(
+                        repository: SessionRepository(apiService),
+                      ),
+                      child: SessionScreen(
+                        studentName:
+                            "${selectedStudent!.firstName} ${selectedStudent!.lastName ?? ''}",
+                        startPage: start,
+                        endPage: end,
+                        studentid: selectedStudent!.id, // إرسال ID هنا أيضاً
+                      ),
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                "بدء جلسة التسميع",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

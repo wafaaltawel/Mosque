@@ -1,9 +1,8 @@
-
-
 import 'package:quran/data/models/session_error_model.dart';
 
 class SessionState {
-  final String studentName;
+  final int studentid;
+  final String studentname;
   final int startPage;
   final int endPage;
   final int currentPage;
@@ -12,7 +11,8 @@ class SessionState {
   final bool isSessionEnded;
 
   SessionState({
-    required this.studentName,
+    required this.studentname,
+    required this.studentid,
     required this.startPage,
     required this.endPage,
     required this.currentPage,
@@ -22,16 +22,18 @@ class SessionState {
   });
 
   factory SessionState.initial() => SessionState(
-        studentName: '',
-        startPage: 0,
-        endPage: 0,
-        currentPage: 0,
-        duration: 0,
-        errors: [],
-        isSessionEnded: false,
-      );
+    studentid: 0,
+    startPage: 0,
+    endPage: 0,
+    currentPage: 0,
+    duration: 0,
+    errors: [],
+    isSessionEnded: false,
+    studentname: '',
+  );
 
   SessionState copyWith({
+    int? studentid,
     String? studentName,
     int? startPage,
     int? endPage,
@@ -41,13 +43,15 @@ class SessionState {
     bool? isSessionEnded,
   }) {
     return SessionState(
-      studentName: studentName ?? this.studentName,
+      studentid: studentid ?? this.studentid,
       startPage: startPage ?? this.startPage,
       endPage: endPage ?? this.endPage,
       currentPage: currentPage ?? this.currentPage,
       duration: duration ?? this.duration,
       errors: errors ?? this.errors,
       isSessionEnded: isSessionEnded ?? this.isSessionEnded,
+      studentname: studentName ?? this.studentname,
+
     );
   }
 }

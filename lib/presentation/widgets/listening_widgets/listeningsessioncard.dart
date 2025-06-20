@@ -38,11 +38,11 @@ class ListeningSessionCard extends StatelessWidget {
                   style: const TextStyle(color: Colors.purple, fontSize: 11),
                 ),
                 Text(
-                  "${data.duration} دقائق",
+                  "${data.duration} الوقت",
                   style: const TextStyle(color: Colors.blue, fontSize: 11),
                 ),
                 Text(
-                  "${data.student.firstName} ${data.start.bitLength}",
+                  "${data.student.firstName} ${data.student.lastName}",
                   style: const TextStyle(color: Colors.teal, fontSize: 11),
                 ),
               ],

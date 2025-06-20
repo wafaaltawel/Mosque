@@ -2,14 +2,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/presentation/blocs/listening/listening_bloc.dart';
+import 'package:quran/presentation/blocs/listening/listening_event.dart';
 import 'package:quran/presentation/blocs/listening/listening_state.dart';
 import 'package:quran/presentation/widgets/listening_widgets/listeninginfobanner.dart';
 import 'package:quran/presentation/widgets/listening_widgets/listeningsessioncard.dart';
 import 'package:quran/presentation/widgets/listening_widgets/startsessionbuttonandtitle.dart';
 import 'package:quran/presentation/widgets/listening_widgets/studentnamefilterinput.dart';
-
-class ListeningScreen extends StatelessWidget {
+class ListeningScreen extends StatefulWidget {
   const ListeningScreen({super.key});
+
+  @override
+  State<ListeningScreen> createState() => _ListeningScreenState();
+}
+
+class _ListeningScreenState extends State<ListeningScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // عند بدء الشاشة، اطلب تحميل بيانات التسميع
+    context.read<ListeningBloc>().add(LoadListening());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +36,6 @@ class ListeningScreen extends StatelessWidget {
               children: [
                 const ListeningInfoBanner(),
                 const StartSessionButtonAndTitle(),
-               // const StudentNameFilterInput(),
                 Expanded(
                   child: ListView.builder(
                     itemCount: state.listening.length,
@@ -38,6 +49,7 @@ class ListeningScreen extends StatelessWidget {
           } else if (state is ListeningError) {
             return Center(child: Text(state.message));
           }
+          // حالة البداية أو أي حالة غير متوقعة
           return const SizedBox();
         },
       ),
