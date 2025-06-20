@@ -10,6 +10,7 @@ import 'package:quran/presentation/screens/attendance_screen.dart';
 import 'package:quran/presentation/screens/home_screen.dart';
 import 'package:quran/presentation/screens/login_screen.dart';
 import 'package:quran/presentation/screens/main_screen.dart';
+import 'package:quran/presentation/screens/splash_screen.dart';
 import 'core/network/api_service.dart';
 import 'core/network/dio_helper.dart';
 
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
       title: 'منصة الحلقات',
       theme: ThemeData(fontFamily: 'Cairo'), // اختياري
       routes: {
-        '/': (_) => const LoginScreen(),
+        '/':(_) => const SplashScreen(),
+        '/login': (_) => const LoginScreen(),
         '/home': (_) => const HomeScreen(), // <- تغيير هنا
         '/main': (_) => const MainScreen(), // ✅ أضف هذا السطر لحل المشكلة
         '/attendance': (_) => const AttendanceScreen(),
