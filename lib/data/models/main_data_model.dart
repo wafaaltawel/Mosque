@@ -223,7 +223,7 @@ class StudentModel {
     return StudentModel(
       id: json['id'] ?? 0,
       currentMosqueName: json['current_mosque_name'] as String?,
-      educationalClass: json['educational_class'] as String?,
+      educationalClass: json['educational_class']?.toString(),
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] as String?,
       birthDate: json['birth_date'] as String?,
