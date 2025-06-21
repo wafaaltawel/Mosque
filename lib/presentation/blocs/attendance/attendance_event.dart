@@ -10,6 +10,13 @@ class UpdateStudentAttendance extends AttendanceEvent {
   UpdateStudentAttendance(this.studentId, this.status);
 }
 
+class UpdateAllAttendance extends AttendanceEvent {
+  final Map<int, AttendanceEnumStatus> statuses;
+  final Map<int, int> delays;
+
+  UpdateAllAttendance(this.statuses, this.delays);
+}
+
 class SubmitAttendance extends AttendanceEvent {
   SubmitAttendance(List<AttendanceModel> list);
 }

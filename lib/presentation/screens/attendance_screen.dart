@@ -12,7 +12,7 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendanceScreen> {
-  Map<int, int> delays = {}; // studentId -> delay
+  Map<int, int> delays = {}; // studentId -> delay in minutes
 
   int? selectedDelay(int studentId) => delays[studentId];
 
@@ -30,8 +30,10 @@ class _AttendancePageState extends State<AttendanceScreen> {
       padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          const Text('التفقد والحضور',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const Text(
+            'التفقد والحضور',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 10),
           Expanded(
             child: ListView.separated(
@@ -59,8 +61,10 @@ class _AttendancePageState extends State<AttendanceScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text("${s.firstName} ${s.lastName}",
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(
+                            "${s.firstName} ${s.lastName}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           Text(s.educationalClass ?? "لم يحدد"),
                         ],
                       ),
@@ -72,20 +76,52 @@ class _AttendancePageState extends State<AttendanceScreen> {
           ),
           const SizedBox(height: 10),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               final now = DateTime.now();
-              final list = delays.entries
-                  .map(
-                    (e) => AttendanceModel(
-                      studentId: e.key,
-                      campaignId: campaignId,
-                      groupId: groupId,
-                      takenDate: now,
-                      delay: e.value,
-                    ),
-                  )
-                  .toList();
-              context.read<AttendanceBloc>().add(SubmitAttendance(list));
+              final valid = delays.entries.where((e) => e.value != -1).toList();
+
+              if (valid.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("يرجى تحديد حالة حضور واحدة على الأقل")),
+                );
+                return;
+              }
+
+              final list = valid.map((e) {
+                final delay = e.value;
+                String status;
+
+                if (delay == 0) {
+                  status = "ATTEND";
+                } else if (delay >= 1000) {
+                  status = "MISSED";
+                } else {
+                  status = "DELAY";
+                }
+
+                return AttendanceModel(
+                  studentId: e.key,
+                  campaignId: campaignId,
+                 
+                  delay: delay,
+                  status: status, date: '',
+                );
+              }).toList();
+
+              final bloc = context.read<AttendanceBloc>();
+              final success = await bloc.sendAttendanceAndWait(list);
+
+              if (!mounted) return;
+
+              if (success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("✅ تم إرسال الحضور بنجاح")),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("❌ فشل إرسال الحضور")),
+                );
+              }
             },
             child: const Text('إرسال'),
           )
@@ -94,9 +130,7 @@ class _AttendancePageState extends State<AttendanceScreen> {
     );
   }
 
-  Widget _statusButton(
-      String label, int delayValue, int? selected, int studentId, Color color) {
-    // زر "متأخر" يفتح اختيار مقدار التأخير
+  Widget _statusButton(String label, int delayValue, int? selected, int studentId, Color color) {
     if (delayValue == 500) {
       final isSelected = selected != null && selected > 0 && selected <= 90;
       return Padding(
@@ -110,7 +144,7 @@ class _AttendancePageState extends State<AttendanceScreen> {
                 return ListView(
                   children: options
                       .map((minute) => ListTile(
-                            title: Text('دقائق $minute '),
+                            title: Text('متأخر $minute دقيقة'),
                             onTap: () => Navigator.pop(context, minute),
                           ))
                       .toList(),
@@ -137,7 +171,6 @@ class _AttendancePageState extends State<AttendanceScreen> {
       );
     }
 
-    // باقي الأزرار عادية بدون تغيير
     final isSelected = delayValue == selected;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -149,8 +182,10 @@ class _AttendancePageState extends State<AttendanceScreen> {
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          child: Text(label,
-              style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
+          child: Text(
+            label,
+            style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+          ),
         ),
       ),
     );
