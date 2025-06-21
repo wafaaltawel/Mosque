@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (state is MainLoaded) {
             return Text(
               'منصة حلقات',
-              style: const TextStyle(
+              style: const TextStyle( 
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
