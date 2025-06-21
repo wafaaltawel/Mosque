@@ -53,9 +53,27 @@ class _AttendancePageState extends State<AttendanceScreen> {
                     children: [
                       Row(
                         children: [
-                          _statusButton('متأخر', 500, selected, s.id, Colors.orange),
-                          _statusButton('غائب', 1000, selected, s.id, Colors.pink),
-                          _statusButton('حاضر', 0, selected, s.id, Colors.lightBlue),
+                          _statusButton(
+                            'متأخر',
+                            500,
+                            selected,
+                            s.id,
+                            Colors.orange,
+                          ),
+                          _statusButton(
+                            'غائب',
+                            1000,
+                            selected,
+                            s.id,
+                            Colors.pink,
+                          ),
+                          _statusButton(
+                            'حاضر',
+                            0,
+                            selected,
+                            s.id,
+                            Colors.lightBlue,
+                          ),
                         ],
                       ),
                       Column(
@@ -78,11 +96,16 @@ class _AttendancePageState extends State<AttendanceScreen> {
           ElevatedButton(
             onPressed: () async {
               final now = DateTime.now();
+              final formattedDate =
+                  "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
               final valid = delays.entries.where((e) => e.value != -1).toList();
 
               if (valid.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("يرجى تحديد حالة حضور واحدة على الأقل")),
+                  const SnackBar(
+                    content: Text("يرجى تحديد حالة حضور واحدة على الأقل"),
+                  ),
                 );
                 return;
               }
@@ -102,9 +125,9 @@ class _AttendancePageState extends State<AttendanceScreen> {
                 return AttendanceModel(
                   studentId: e.key,
                   campaignId: campaignId,
-                 
                   delay: delay,
-                  status: status, date: '',
+                  status: status,
+                  date: formattedDate, // ✅ التاريخ بصيغة yyyy-MM-dd
                 );
               }).toList();
 
@@ -123,14 +146,21 @@ class _AttendancePageState extends State<AttendanceScreen> {
                 );
               }
             },
+
             child: const Text('إرسال'),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget _statusButton(String label, int delayValue, int? selected, int studentId, Color color) {
+  Widget _statusButton(
+    String label,
+    int delayValue,
+    int? selected,
+    int studentId,
+    Color color,
+  ) {
     if (delayValue == 500) {
       final isSelected = selected != null && selected > 0 && selected <= 90;
       return Padding(
@@ -143,10 +173,12 @@ class _AttendancePageState extends State<AttendanceScreen> {
                 final options = [5, 10, 15, 20, 30, 45, 60, 90];
                 return ListView(
                   children: options
-                      .map((minute) => ListTile(
-                            title: Text('متأخر $minute دقيقة'),
-                            onTap: () => Navigator.pop(context, minute),
-                          ))
+                      .map(
+                        (minute) => ListTile(
+                          title: Text('متأخر $minute دقيقة'),
+                          onTap: () => Navigator.pop(context, minute),
+                        ),
+                      )
                       .toList(),
                 );
               },
