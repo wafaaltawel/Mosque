@@ -20,7 +20,7 @@ class ClassInfoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            data.groups[0].title,
+data.groups.isNotEmpty ? data.groups[0].title : 'لا يوجد عنوان مجموعة' ,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
