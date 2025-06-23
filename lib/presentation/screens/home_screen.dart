@@ -18,6 +18,7 @@ import 'package:quran/presentation/blocs/teacher/teacher_event.dart';
 import 'package:quran/presentation/screens/listening_screen.dart';
 import 'package:quran/presentation/screens/main_screen.dart';
 import 'package:quran/presentation/screens/attendance_screen.dart';
+import 'package:quran/presentation/widgets/home_widgets/buildEmptyState.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,12 +64,34 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is MainLoaded) {
             final mainData = state.data;
 
+            if (mainData.groups.isEmpty) {
+              return EmptyStateWidget(
+            
+                icon: Icons.info_outline,
+                title: "عذراً، لا يوجد أي بيانات لعرضها حالياً.",
+                subtitle: "يرجى المحاولة مرة أخرى لاحقاً.",
+                onRetry: () => context.read<MainBloc>().add(LoadMainData()),
+              );
+            }
+
+            final group = mainData.groups[0];
+
+            if (group.students.isEmpty) {
+              return EmptyStateWidget(
+               
+                icon: Icons.group_off,
+                title: "لا يوجد طلاب في هذه المجموعة.",
+                subtitle: "يرجى إضافة طلاب أو اختيار مجموعة أخرى.",
+                onRetry: () => context.read<MainBloc>().add(LoadMainData()),
+              );
+            }
+
             return BlocProvider(
               create: (_) => AttendanceBloc(
                 attendanceRepo,
-                mainData.groups[0].students,
+                group.students,
                 1,
-                mainData.groups[0].id,
+                group.id,
               ),
               child: buildScaffold(),
             );
@@ -78,37 +101,37 @@ class _HomeScreenState extends State<HomeScreen> {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
-          }
-
-          else if (state is MainError) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              state.message,
-              style: const TextStyle(fontSize: 16, color: Colors.red),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                context.read<MainBloc>().add(LoadMainData());
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2b836b),
+          } else if (state is MainError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 16, color: Colors.red),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<MainBloc>().add(LoadMainData());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2b836b),
+                    ),
+                    child: const Text('إعادة المحاولة'),
+                  ),
+                ],
               ),
-              child: const Text('إعادة المحاولة'),
-            ),
-          ],
-        ),
-      );
-    }
+            );
+          }
 
           return const SizedBox.shrink();
         },
       ),
     );
   }
+
+ 
 
   Widget buildScaffold() {
     return Scaffold(

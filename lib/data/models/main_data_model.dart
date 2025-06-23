@@ -414,7 +414,7 @@ class GroupModel {
 class StudentModel {
   final int id;
   final String? currentMosqueName;
-  final String? educationalClass;
+  final int? educationalClass;
   final String firstName;
   final String? lastName;
   final String? birthDate;
@@ -510,7 +510,7 @@ class StudentModel {
     return StudentModel(
       id: json['id'] ?? 0,
       currentMosqueName: json['current_mosque_name'] as String?,
-      educationalClass: json['educational_class']?.toString(),
+      educationalClass: json['educational_class'],
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] as String?,
       birthDate: json['birth_date'] as String?,

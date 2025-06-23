@@ -30,27 +30,37 @@ print("بدأ جلسة تسميع");
               // 👇 اجلب الطلاب من MainBloc
               final mainState = context.read<MainBloc>().state;
               if (mainState is MainLoaded) {
-                final students = mainState.data.groups[0].students;
-                print(students);
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (_) => BlocProvider(
-                    create: (_) =>
-                        ListeningSessionBloc(ListeningSessionRepository())
-                          ..add(LoadStudentsSessionEvent()),
-                    child: StartSessionSheet(
-                      students: students,
-                    ), // ✅ تمرير الطلاب هنا
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('الرجاء الانتظار حتى تحميل البيانات'),
-                  ),
-                );
-              }
+  if (mainState.data.groups.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('لا توجد مجموعات لعرض الطلاب'),
+      ),
+    );
+    return; // تمنع الاستمرار بدون بيانات
+  }
+
+  final students = mainState.data.groups[0].students;
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (_) => BlocProvider(
+      create: (_) =>
+          ListeningSessionBloc(ListeningSessionRepository())
+            ..add(LoadStudentsSessionEvent()),
+      child: StartSessionSheet(
+        students: students,
+      ),
+    ),
+  );
+} else {
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('الرجاء الانتظار حتى تحميل البيانات'),
+    ),
+  );
+}
+
             },
 
             child: const Text(

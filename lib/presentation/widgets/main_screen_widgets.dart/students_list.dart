@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quran/core/constants/EducationalClassText.dart';
 import 'package:quran/data/models/main_data_model.dart';
 
 class StudentsList extends StatelessWidget {
@@ -31,25 +32,21 @@ class StudentsList extends StatelessWidget {
                   color: const Color(0xffd8f4f0),
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: Text(
-                  student.educationalClass ?? "لم يسجل",
-                  style: const TextStyle(
-                    color: Color(0xff00b9b0),
-                  ),
-                ),
+                child: EducationalClassText(classNumber: student.educationalClass),
+
               ),
               Expanded(
                 child: Text(
-                 "${student.firstName} ${student.lastName}",
+                  "${student.firstName} ${student.lastName}",
                   textAlign: TextAlign.right,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(width: 12),
               CircleAvatar(
-                backgroundImage: NetworkImage(student.imageUrl ?? 'https://via.placeholder.com/150'),
+                backgroundImage: NetworkImage(
+                  student.imageUrl ?? 'https://via.placeholder.com/150',
+                ),
                 radius: 22,
               ),
             ],

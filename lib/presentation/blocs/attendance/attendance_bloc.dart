@@ -38,33 +38,41 @@ Future<bool> sendAttendanceAndWait(List<AttendanceModel> list) async {
 
 
     on<SubmitAttendance>((event, emit) async {
-      emit(state.copyWith(submitting: true));
-      try {
-        final now = DateTime.now().toIso8601String().split('T').first;
+  emit(state.copyWith(submitting: true));
+  try {
+    final now = DateTime.now().toIso8601String().split('T').first;
 
-        final data = students.where((student) {
-          final status = state.studentStatus[student.id];
-          return status != null && status != AttendanceEnumStatus.NOT_TAKEN;
-        }).map((student) {
-          final status = state.studentStatus[student.id]!;
-          final delay = status == AttendanceEnumStatus.DELAY
-              ? delayMap[student.id] ?? 5
-              : 0;
+    // فلترة الطلاب الذين لديهم حالة مسجلة
+    final filteredStudents = students.where((student) {
+      final status = state.studentStatus[student.id];
+      return status != null && status != AttendanceEnumStatus.NOT_TAKEN;
+    }).toList();
 
-          return AttendanceModel(
-            studentId: student.id,
-            campaignId: campaignId,
-            status: status.apiStatus,
-            delay: delay,
-            date: now,
-          );
-        }).toList();
+    if (filteredStudents.isEmpty) {
+      emit(state.copyWith(
+          submitting: false, error: 'لم يتم تسجيل أي حالة حضور للطلاب'));
+      return;
+    }
 
-        await repo.sendAttendance(groupId, campaignId, data);
-        emit(state.copyWith(submitting: false, success: true));
-      } catch (e) {
-        emit(state.copyWith(submitting: false, error: e.toString()));
-      }
-    });
+    final data = filteredStudents.map((student) {
+      final status = state.studentStatus[student.id]!;
+
+      final delay = status == AttendanceEnumStatus.DELAY
+          ? delayMap[student.id] ?? 5
+          : 0;
+
+      return AttendanceModel(
+        studentId: student.id,
+        campaignId: campaignId,
+        status: status.apiStatus,
+        delay: delay,
+        date: now,
+      );
+    }).toList();
+
+    await repo.sendAttendance(groupId, campaignId, data);
+    emit(state.copyWith(submitting: false, success: true));
+  } catch (e) {
+    emit(state.copyWith(submitting: false, error: e.toString()));
   }
-}
+});}}
