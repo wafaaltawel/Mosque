@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/presentation/blocs/main/main_bloc.dart';
 import 'package:quran/presentation/blocs/main/main_state.dart';
 
@@ -18,7 +19,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (state is MainLoaded) {
             return Text(
               'منصة حلقات',
-              style: const TextStyle( 
+              style: FontStyles.bodyText.copyWith(
+                fontSize: 25,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),

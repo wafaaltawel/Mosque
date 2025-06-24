@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quran/core/constants/EducationalClassText.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/data/models/main_data_model.dart';
 
 class StudentsList extends StatelessWidget {
@@ -32,14 +33,17 @@ class StudentsList extends StatelessWidget {
                   color: const Color(0xffd8f4f0),
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: EducationalClassText(classNumber: student.educationalClass),
-
+                child: EducationalClassText(
+                  classNumber: student.educationalClass,
+                ),
               ),
               Expanded(
                 child: Text(
                   "${student.firstName} ${student.lastName}",
                   textAlign: TextAlign.right,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: FontStyles.bodyText.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/data/models/listening_model.dart';
 
 class ListeningSessionCard extends StatelessWidget {
@@ -18,32 +19,35 @@ class ListeningSessionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const Icon(Icons.arrow_back_ios, size: 10, color: Colors.grey),
-                Text("${data.teacher.firstName} ${data.teacher.lastName}", style: const TextStyle(fontSize: 12)),
+                Text(
+                  "${data.teacher.firstName} ${data.teacher.lastName}",
+                  style: FontStyles.bodyText.copyWith(fontSize: 18),
+                ),
               ],
             ),
             const SizedBox(height: 10),
             Wrap(
               spacing: 10,
               children: [
-                 Text(
-                    data.evaluation.title,
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                 ),
+                Text(
+                  data.evaluation.title,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
                 Text(
                   "${data.evaluation.points} نقطة",
-                  style: const TextStyle(color: Colors.purple, fontSize: 11),
+                  style: const TextStyle(color: Colors.purple, fontSize: 15),
                 ),
                 Text(
                   "${data.duration} الوقت",
-                  style: const TextStyle(color: Colors.blue, fontSize: 11),
+                  style: const TextStyle(color: Colors.blue, fontSize: 15),
                 ),
                 Text(
                   "${data.student.firstName} ${data.student.lastName}",
-                  style: const TextStyle(color: Colors.teal, fontSize: 11),
+                  style: const TextStyle(color: Colors.teal, fontSize: 15),
                 ),
               ],
             ),

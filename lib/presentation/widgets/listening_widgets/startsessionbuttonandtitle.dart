@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/data/repositories/listening_session_repository.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_bloc.dart';
 import 'package:quran/presentation/blocs/listeningsession/listeningsession_event.dart';
@@ -25,53 +26,52 @@ class StartSessionButtonAndTitle extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              
-print("بدأ جلسة تسميع");
+              print("بدأ جلسة تسميع");
               // 👇 اجلب الطلاب من MainBloc
               final mainState = context.read<MainBloc>().state;
               if (mainState is MainLoaded) {
-  if (mainState.data.groups.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('لا توجد مجموعات لعرض الطلاب'),
-      ),
-    );
-    return; // تمنع الاستمرار بدون بيانات
-  }
+                if (mainState.data.groups.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('لا توجد مجموعات لعرض الطلاب'),
+                    ),
+                  );
+                  return; // تمنع الاستمرار بدون بيانات
+                }
 
-  final students = mainState.data.groups[0].students;
+                final students = mainState.data.groups[0].students;
 
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    builder: (_) => BlocProvider(
-      create: (_) =>
-          ListeningSessionBloc(ListeningSessionRepository())
-            ..add(LoadStudentsSessionEvent()),
-      child: StartSessionSheet(
-        students: students,
-      ),
-    ),
-  );
-} else {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('الرجاء الانتظار حتى تحميل البيانات'),
-    ),
-  );
-}
-
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => BlocProvider(
+                    create: (_) =>
+                        ListeningSessionBloc(ListeningSessionRepository())
+                          ..add(LoadStudentsSessionEvent()),
+                    child: StartSessionSheet(students: students),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('الرجاء الانتظار حتى تحميل البيانات'),
+                  ),
+                );
+              }
             },
 
-            child: const Text(
+            child: Text(
               "بدء جلسة تسميع",
-              style: TextStyle(fontSize: 14, color: Colors.white),
+              style: FontStyles.bodyText.copyWith(
+                fontSize: 18,
+                color: Colors.white,
+              ),
             ),
           ),
           const Spacer(),
-          const Text(
+          Text(
             "جلسات التسميع",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: FontStyles.bodyText.copyWith(fontSize: 20),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/data/models/attendancemodel.dart';
 import 'package:quran/presentation/blocs/attendance/attendance_bloc.dart';
 
@@ -27,7 +28,9 @@ class StatusSubmitButton extends StatelessWidget {
 
         if (valid.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("يرجى تحديد حالة حضور واحدة على الأقل")),
+            const SnackBar(
+              content: Text("يرجى تحديد حالة حضور واحدة على الأقل"),
+            ),
           );
           return;
         }
@@ -63,12 +66,12 @@ class StatusSubmitButton extends StatelessWidget {
             const SnackBar(content: Text("✅ تم إرسال الحضور بنجاح")),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("❌ فشل إرسال الحضور")),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text("❌ فشل إرسال الحضور")));
         }
       },
-      child: const Text('إرسال'),
+      child: const Text('إرسال', style: FontStyles.bodyText),
     );
   }
 }

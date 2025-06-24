@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quran/core/constants/EducationalClassText.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/data/models/main_data_model.dart';
 
 class AttendanceListItem extends StatelessWidget {
@@ -31,6 +32,8 @@ class AttendanceListItem extends StatelessWidget {
                 context,
                 label: 'متأخر',
                 delayValue: 500,
+                textStyle: FontStyles.bodyText.copyWith(fontSize: 18),
+
                 selected: selectedDelay,
                 color: Colors.orange,
               ),
@@ -38,6 +41,7 @@ class AttendanceListItem extends StatelessWidget {
                 context,
                 label: 'غائب',
                 delayValue: 1000,
+                textStyle: FontStyles.bodyText.copyWith(fontSize: 20),
                 selected: selectedDelay,
                 color: Colors.pink,
               ),
@@ -45,17 +49,23 @@ class AttendanceListItem extends StatelessWidget {
                 context,
                 label: 'حاضر',
                 delayValue: 0,
+                textStyle: FontStyles.bodyText.copyWith(fontSize: 18),
+
                 selected: selectedDelay,
                 color: Colors.lightBlue,
               ),
             ],
           ),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 "${student.firstName} ${student.lastName}",
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: FontStyles.bodyText.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               EducationalClassText(classNumber: student.educationalClass),
             ],
@@ -71,6 +81,7 @@ class AttendanceListItem extends StatelessWidget {
     required int delayValue,
     required int? selected,
     required Color color,
+    required TextStyle textStyle,
   }) {
     if (delayValue == 500) {
       final isSelected = selected != null && selected > 0 && selected <= 90;
@@ -83,10 +94,12 @@ class AttendanceListItem extends StatelessWidget {
               context: context,
               builder: (context) => ListView(
                 children: options
-                    .map((minute) => ListTile(
-                          title: Text('متأخر $minute دقيقة'),
-                          onTap: () => Navigator.pop(context, minute),
-                        ))
+                    .map(
+                      (minute) => ListTile(
+                        title: Text('متأخر $minute دقيقة'),
+                        onTap: () => Navigator.pop(context, minute),
+                      ),
+                    )
                     .toList(),
               ),
             );
@@ -103,8 +116,10 @@ class AttendanceListItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             child: Text(
               isSelected ? 'متأخر ($selected د)' : label,
-              style:
-                  TextStyle(color: isSelected ? Colors.white : Colors.black),
+              style: FontStyles.bodyText.copyWith(
+                color: isSelected ? Colors.white : Colors.black,
+                fontSize: 16,
+              ),
             ),
           ),
         ),
@@ -124,7 +139,10 @@ class AttendanceListItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           child: Text(
             label,
-            style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+            style: FontStyles.bodyText.copyWith(
+              color: isSelected ? Colors.white : Colors.black,
+              fontSize: 16,
+            ),
           ),
         ),
       ),

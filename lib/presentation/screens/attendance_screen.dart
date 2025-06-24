@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/presentation/blocs/attendance/attendance_bloc.dart';
 import 'package:quran/presentation/widgets/attendance_widgets/AttendanceListItem.dart';
 import 'package:quran/presentation/widgets/attendance_widgets/StatusSubmitButton.dart';
@@ -31,9 +32,9 @@ class _AttendancePageState extends State<AttendanceScreen> {
       padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          const Text(
+          Text(
             'التفقد والحضور',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+           style:  FontStyles.bodyText,
           ),
           const SizedBox(height: 10),
           Expanded(

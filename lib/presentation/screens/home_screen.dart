@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/core/constants/appBar.dart';
 import 'package:quran/core/constants/bottomNavigation.dart';
+import 'package:quran/core/constants/fonts.dart';
 import 'package:quran/core/network/api_service.dart';
 import 'package:quran/core/network/dio_helper.dart';
 import 'package:quran/data/repositories/attendancer_repository.dart';
@@ -146,18 +147,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        selectedItemColor: const Color(0xFF2b836b),
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() => currentIndex = index);
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'التسميع'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
-          BottomNavigationBarItem(icon: Icon(Icons.check), label: 'الحضور'),
-        ],
-      ),
+  currentIndex: currentIndex,
+  selectedItemColor: const Color(0xFF2b836b),
+  unselectedItemColor: Colors.grey,
+
+  selectedLabelStyle: FontStyles.bodyText,
+  unselectedLabelStyle: FontStyles.bodyText,
+
+  onTap: (index) {
+    setState(() => currentIndex = index);
+  },
+  items: const [
+    BottomNavigationBarItem(icon: Icon(Icons.book), label: 'التسميع'),
+    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
+    BottomNavigationBarItem(icon: Icon(Icons.check), label: 'الحضور'),
+  ],
+),
+
     );
   }
 }
