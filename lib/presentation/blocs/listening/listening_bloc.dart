@@ -1,7 +1,6 @@
 import 'dart:async'; // ⬅️ نحتاج هذا لـ Future.delayed
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/data/models/listening_model.dart';
 import 'package:quran/data/repositories/listening_repository.dart';
 import 'listening_event.dart';
 import 'listening_state.dart';

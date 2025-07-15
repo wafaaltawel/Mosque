@@ -11,9 +11,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         await repo.login(phone: event.phone, password: event.password);
+        print('✅ AuthBloc: login successful, emitting AuthSuccess');
         emit(AuthSuccess());
-      } catch (e) {
-        emit(AuthFailure('فشل تسجيل الدخول'));
+      } catch (e, stackTrace) {
+        print('❌ AuthBloc login failed: $e');
+        print(stackTrace);
+        emit(AuthFailure('Login failed'));
       }
     });
   }

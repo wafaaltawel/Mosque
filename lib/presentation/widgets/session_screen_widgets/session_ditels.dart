@@ -4,7 +4,7 @@ import 'package:quran/presentation/blocs/session/session_state.dart';
 
 class SessionDetails extends StatelessWidget {
   final SessionState state;
-  const SessionDetails({required this.state});
+  const SessionDetails({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {

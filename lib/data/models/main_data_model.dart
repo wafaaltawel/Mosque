@@ -301,15 +301,15 @@ class MainDataModel {
   final String? currentResidenceAddressArea;
   final String? currentResidenceAddressStreet;
   final String? currentResidenceAddressBuilding;
-  final String? preservedParts;
-  final String? partsTestedByTheEndowments;
+  final List<String>? preservedParts;
+  final List<String>? partsTestedByTheEndowments;
   final String? imageUrl;
   final bool? isMojaz;
   final bool? isWorking;
   final String? jobRole;
   final String? workplaceName;
   final String password;
-  final String role;
+  final RoleModel role;
   final String createdAt;
   final String updatedAt;
   final List<GroupModel> groups;
@@ -358,18 +358,27 @@ class MainDataModel {
       otherMosqueNames: json['other_mosque_names'] as String?,
       specialTalent: json['special_talent'] as String?,
       fatherName: json['father_name'] as String?,
-      currentResidenceAddressArea: json['current_residence_address_area'] as String?,
-      currentResidenceAddressStreet: json['current_residence_address_street'] as String?,
-      currentResidenceAddressBuilding: json['current_residence_address_building'] as String?,
-      preservedParts: json['preserved_parts'] as String?,
-      partsTestedByTheEndowments: json['parts_tested_by_the_endowments'] as String?,
+      currentResidenceAddressArea:
+          json['current_residence_address_area'] as String?,
+      currentResidenceAddressStreet:
+          json['current_residence_address_street'] as String?,
+      currentResidenceAddressBuilding:
+          json['current_residence_address_building'] as String?,
+      preservedParts: (json['preserved_parts'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
+      partsTestedByTheEndowments:
+          (json['parts_tested_by_the_endowments'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
+
       imageUrl: json['image_url'] as String?,
       isMojaz: json['is_mojaz'] as bool?,
       isWorking: json['is_working'] as bool?,
       jobRole: json['job_role'] as String?,
       workplaceName: json['workplace_name'] as String?,
       password: json['password'] ?? '',
-      role: json['role'] ?? '',
+      role: RoleModel.fromJson(json['role'] ?? {}),
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
       groups: (json['groups'] as List<dynamic>? ?? [])
@@ -378,6 +387,7 @@ class MainDataModel {
     );
   }
 }
+
 class GroupModel {
   final int id;
   final String title;
@@ -411,6 +421,7 @@ class GroupModel {
     );
   }
 }
+
 class StudentModel {
   final int id;
   final String? currentMosqueName;
@@ -539,20 +550,45 @@ class StudentModel {
       parentMaritalStatus: json['parent_marital_status'] as String?,
       studentMobileNumber: json['student_mobile_number'] as String?,
       studentHomeNumber: json['student_home_number'] as String?,
-      originalResidenceAddressArea: json['original_residence_address_area'] as String?,
-      originalResidenceAddressStreet: json['original_residence_address_street'] as String?,
-      originalResidenceAddressBuilding: json['original_residence_address_building'] as String?,
-      originalResidenceAddressFloor: json['original_residence_address_floor'] as String?,
-      currentResidenceAddressArea: json['current_residence_address_area'] as String?,
-      currentResidenceAddressStreet: json['current_residence_address_street'] as String?,
-      currentResidenceAddressBuilding: json['current_residence_address_building'] as String?,
-      currentResidenceAddressFloor: json['current_residence_address_floor'] as String?,
+      originalResidenceAddressArea:
+          json['original_residence_address_area'] as String?,
+      originalResidenceAddressStreet:
+          json['original_residence_address_street'] as String?,
+      originalResidenceAddressBuilding:
+          json['original_residence_address_building'] as String?,
+      originalResidenceAddressFloor:
+          json['original_residence_address_floor'] as String?,
+      currentResidenceAddressArea:
+          json['current_residence_address_area'] as String?,
+      currentResidenceAddressStreet:
+          json['current_residence_address_street'] as String?,
+      currentResidenceAddressBuilding:
+          json['current_residence_address_building'] as String?,
+      currentResidenceAddressFloor:
+          json['current_residence_address_floor'] as String?,
       preservedParts: json['preserved_parts'] as String?,
-      partsTestedByTheEndowments: json['parts_tested_by_the_endowments'] as String?,
+      partsTestedByTheEndowments:
+          json['parts_tested_by_the_endowments'] as String?,
       imageUrl: json['image_url'] as String?,
       password: json['password'] ?? '',
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
+    );
+  }
+}
+
+class RoleModel {
+  final String name;
+  final List<String> permissions;
+
+  RoleModel({required this.name, required this.permissions});
+
+  factory RoleModel.fromJson(Map<String, dynamic> json) {
+    return RoleModel(
+      name: json['name'] ?? '',
+      permissions: (json['permissions'] as List<dynamic>? ?? [])
+          .map((e) => e.toString())
+          .toList(),
     );
   }
 }

@@ -50,7 +50,7 @@ class SessionState {
       duration: duration ?? this.duration,
       errors: errors ?? this.errors,
       isSessionEnded: isSessionEnded ?? this.isSessionEnded,
-      studentname: studentName ?? this.studentname,
+      studentname: studentName ?? studentname,
 
     );
   }

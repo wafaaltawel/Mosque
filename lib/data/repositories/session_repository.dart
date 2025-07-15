@@ -1,9 +1,9 @@
 // --- session_repository.dart ---
 
-import 'package:dio/dio.dart';
 import 'package:quran/core/constants/baseUrl.dart';
 import 'package:quran/data/models/session_error_model.dart';
 import 'package:quran/presentation/screens/login_screen.dart';
+import 'package:quran/session_manager.dart';
 import '../../core/network/api_service.dart';
 
 class SessionRepository {

@@ -22,7 +22,8 @@ class SplashScreen extends StatelessWidget {
     await Future.delayed(const Duration(seconds: 1));
 
     if (token != null && teacherId != null && !_isTokenExpired(token)) {
-      Navigator.pushReplacementNamed(context, '/home');
+      // Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/campaigns');
     } else {
       // حذف البيانات المنتهية
       await prefs.remove('token');
@@ -36,7 +37,9 @@ class SplashScreen extends StatelessWidget {
       final parts = token.split('.');
       if (parts.length != 3) return true;
 
-      final payload = json.decode(utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
+      final payload = json.decode(
+        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
+      );
       final exp = payload['exp'];
 
       if (exp == null) return true;

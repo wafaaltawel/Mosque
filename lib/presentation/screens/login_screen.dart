@@ -9,6 +9,7 @@ import 'package:quran/presentation/blocs/teacher/teacher_state.dart';
 import 'package:quran/presentation/widgets/login_widgets/custom_text_field.dart';
 import 'package:quran/presentation/widgets/login_widgets/login_button.dart';
 import 'package:quran/presentation/widgets/login_widgets/logo_header.dart';
+import 'package:quran/session_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     await SessionManager.setTeacherId(teacherId);
 
                     // ثم الانتقال
-                    Navigator.pushReplacementNamed(context, '/home');
+                    Navigator.pushReplacementNamed(context, '/campaigns');
                   } else if (state is TeacherError) {
                     ScaffoldMessenger.of(
                       context,
@@ -118,24 +119,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class SessionManager {
-  static const String _teacherIdKey = 'teacher_id';
+// class SessionManager {
+//   static const String _teacherIdKey = 'teacher_id';
 
-  // حفظ ID
-  static Future<void> setTeacherId(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_teacherIdKey, id);
-  }
+//   // حفظ ID
+//   static Future<void> setTeacherId(int id) async {
+//     final prefs = await SharedPreferences.getInstance();
+//     await prefs.setInt(_teacherIdKey, id);
+//   }
 
-  // جلب ID
-  static Future<int?> getTeacherId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_teacherIdKey);
-  }
+//   // جلب ID
+//   static Future<int?> getTeacherId() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     return prefs.getInt(_teacherIdKey);
+//   }
 
-  // حذف ID (اختياري لتسجيل الخروج)
-  static Future<void> clearTeacherId() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_teacherIdKey);
-  }
-}
+//   // حذف ID (اختياري لتسجيل الخروج)
+//   static Future<void> clearTeacherId() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     await prefs.remove(_teacherIdKey);
+//   }
+// }

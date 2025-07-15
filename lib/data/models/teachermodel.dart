@@ -14,8 +14,8 @@ class TeacherModel {
   final String? addressArea;
   final String? addressStreet;
   final String? addressBuilding;
-  final String? preservedParts;
-  final String? partsTestedByEndowments;
+  final List<String> preservedParts;
+  final List<String> partsTestedByEndowments;
   final String? imageUrl;
   final bool? isMojaz;
   final bool? isWorking;
@@ -58,40 +58,41 @@ class TeacherModel {
   });
 
   factory TeacherModel.fromJson(Map<String, dynamic> json) {
-  try {
-    return TeacherModel(
-      id: json['id'] ?? 0,
-      educationalLevel: json['educational_level'],
-      universityName: json['university_name'],
-      collegeName: json['college_name'],
-      firstName: json['first_name'] ?? '',
-      lastName: json['last_name'] ?? '',
-      birthDate: json['birth_date'],
-      mobilePhoneNumber: json['mobile_phone_number'] ?? '',
-      inAnotherMosque: json['in_another_mosque'],
-      otherMosqueNames: json['other_mosque_names'],
-      specialTalent: json['special_talent'],
-      fatherName: json['father_name'],
-      addressArea: json['current_residence_address_area'],
-      addressStreet: json['current_residence_address_street'],
-      addressBuilding: json['current_residence_address_building'],
-      preservedParts: json['preserved_parts'],
-      partsTestedByEndowments: json['parts_tested_by_the_endowments'],
-      imageUrl: json['image_url'],
-      isMojaz: json['is_mojaz'],
-      isWorking: json['is_working'],
-      jobRole: json['job_role'],
-      workplaceName: json['workplace_name'],
-      password: json['password'],
-      role: json['role'] ?? '',
-      createdAt: json['created_at'] ?? '',
-      updatedAt: json['updated_at'] ?? '',
-      userType: json['userType'] ?? '',
-    );
-  } catch (e) {
-    print('❌ خطأ في fromJson: $e');
-    rethrow;
+    try {
+      return TeacherModel(
+        id: json['id'] ?? 0,
+        educationalLevel: json['educational_level'],
+        universityName: json['university_name'],
+        collegeName: json['college_name'],
+        firstName: json['first_name'] ?? '',
+        lastName: json['last_name'] ?? '',
+        birthDate: json['birth_date'],
+        mobilePhoneNumber: json['mobile_phone_number'] ?? '',
+        inAnotherMosque: json['in_another_mosque'],
+        otherMosqueNames: json['other_mosque_names'],
+        specialTalent: json['special_talent'],
+        fatherName: json['father_name'],
+        addressArea: json['current_residence_address_area'],
+        addressStreet: json['current_residence_address_street'],
+        addressBuilding: json['current_residence_address_building'],
+        preservedParts: List<String>.from(json['preserved_parts'] ?? []),
+        partsTestedByEndowments: List<String>.from(
+          json['parts_tested_by_the_endowments'] ?? [],
+        ),
+        imageUrl: json['image_url'],
+        isMojaz: json['is_mojaz'],
+        isWorking: json['is_working'],
+        jobRole: json['job_role'],
+        workplaceName: json['workplace_name'],
+        password: json['password'],
+        role: json['role'] ?? '',
+        createdAt: json['created_at'] ?? '',
+        updatedAt: json['updated_at'] ?? '',
+        userType: json['userType'] ?? '',
+      );
+    } catch (e) {
+      print(' An eerror occured in fromJson 👎: $e');
+      rethrow;
+    }
   }
-}
-
 }

@@ -6,8 +6,6 @@ import 'package:quran/data/models/main_data_model.dart';
 import 'package:quran/data/repositories/session_repository.dart';
 import 'package:quran/presentation/blocs/listening/listening_bloc.dart';
 import 'package:quran/presentation/blocs/listening/listening_event.dart';
-import 'package:quran/presentation/blocs/listeningsession/listeningsession_bloc.dart';
-import 'package:quran/presentation/blocs/listeningsession/listeningsession_event.dart';
 import 'package:quran/presentation/blocs/session/session_bloc.dart';
 import 'package:quran/presentation/screens/session_screen.dart';
 

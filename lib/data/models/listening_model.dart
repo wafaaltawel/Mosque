@@ -1,3 +1,5 @@
+import 'package:quran/data/models/campaign.dart';
+
 class ListeningModel {
   final int id;
   final int teacherId;
@@ -101,22 +103,22 @@ class Teacher {
   }
 }
 
-class Campaign {
-  final int id;
-  final String name;
+// class Campaign {
+//   final int id;
+//   final String name;
 
-  Campaign({
-    required this.id,
-    required this.name,
-  });
+//   Campaign({
+//     required this.id,
+//     required this.name,
+//   });
 
-  factory Campaign.fromJson(Map<String, dynamic> json) {
-    return Campaign(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
-  }
-}
+//   factory Campaign.fromJson(Map<String, dynamic> json) {
+//     return Campaign(
+//       id: json['id'] ?? 0,
+//       name: json['name'] ?? '',
+//     );
+//   }
+// }
 
 class Evaluation {
   final String title;
